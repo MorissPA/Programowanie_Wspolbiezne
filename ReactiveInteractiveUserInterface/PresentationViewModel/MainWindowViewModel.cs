@@ -9,6 +9,8 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
+using System.Windows.Input;
 using TP.ConcurrentProgramming.Presentation.Model;
 using TP.ConcurrentProgramming.Presentation.ViewModel.MVVMLight;
 using ModelIBall = TP.ConcurrentProgramming.Presentation.Model.IBall;
@@ -17,58 +19,64 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase, IDisposable
     {
+        public double TableWidth => ModelLayer.TableWidth_scaled;
+        public double TableHeight => ModelLayer.TableHeight_scaled;
+
         #region ctor
         public MainWindowViewModel() : this(null) { }
 
         internal MainWindowViewModel(ModelAbstractApi modelLayerAPI)
         {
             ModelLayer = modelLayerAPI == null ? ModelAbstractApi.CreateModel() : modelLayerAPI;
-            Observer = ModelLayer.Subscribe<ModelIBall>(x =>
-            {
-                Balls.Add(x);
-                RaisePropertyChanged(nameof(BallCount));
-                RemoveBallCommand?.RaiseCanExecuteChanged();
-            });
-
-            AddBallCommand = new RelayCommand(AddBall);
-            RemoveBallCommand = new RelayCommand(RemoveBall, () => BallCount > 0);
+            Observer = ModelLayer.Subscribe<ModelIBall>(x => Balls.Add(x));
+            StartCommand = new RelayCommand(() => Start(BallCount), () => CanStart && BallCount > 0);
         }
         #endregion ctor
 
         #region public API
 
-        public ObservableCollection<ModelIBall> Balls { get; } = new ObservableCollection<ModelIBall>();
-        public int BallCount => Balls.Count;
-
-        public RelayCommand AddBallCommand { get; }
-        public RelayCommand RemoveBallCommand { get; }
-
-        public void Start(int numberOfBalls)
+        private int _ballCount = 10;
+        public int BallCount
         {
-            if (Disposed) throw new ObjectDisposedException(nameof(MainWindowViewModel));
-            ModelLayer.Start(numberOfBalls);
-        }
-
-        private void AddBall()
-        {
-            if (Disposed) return;
-            ModelLayer.AddBall();
-        }
-
-        private void RemoveBall()
-        {
-            if (Disposed) return;
-            
-            ModelLayer.RemoveLastBall();
-
-            if (Balls.Count > 0)
+            get => _ballCount;
+            set
             {
-                Balls.RemoveAt(Balls.Count - 1);
-                
-                RaisePropertyChanged(nameof(BallCount));
-                RemoveBallCommand?.RaiseCanExecuteChanged();
+                if (_ballCount != value)
+                {
+                    _ballCount = value;
+                    RaisePropertyChanged();
+                    (StartCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                }
             }
         }
+
+        private bool _canStart = true;
+
+        public bool CanStart
+        {
+            get => _canStart;
+            set
+            {
+                if (_canStart != value)
+                {
+                    _canStart = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        public ICommand StartCommand { get; }
+        public void Start(int numberOfBalls)
+        {
+            if (Disposed)
+                throw new ObjectDisposedException(nameof(MainWindowViewModel));
+            ModelLayer.Start(numberOfBalls);
+            Observer.Dispose();
+
+            CanStart = false;
+        }
+
+        public ObservableCollection<ModelIBall> Balls { get; } = new ObservableCollection<ModelIBall>();
+     
         #endregion public API
 
         #region IDisposable

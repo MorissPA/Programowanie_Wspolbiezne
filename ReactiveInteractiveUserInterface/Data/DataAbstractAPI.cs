@@ -10,56 +10,54 @@
 
 namespace TP.ConcurrentProgramming.Data
 {
-  public abstract class DataAbstractAPI : IDisposable
-  {
-    #region Layer Factory
-
-    public static DataAbstractAPI GetDataLayer()
+    public abstract class DataAbstractAPI : IDisposable
     {
-      return modelInstance.Value;
-    }
+        #region Layer Factory
 
-    #endregion Layer Factory
+        public static DataAbstractAPI GetDataLayer()
+        {
+            return modelInstance.Value;
+        }
 
-    #region public API
+        #endregion Layer Factory
 
-    public abstract void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler);
+        #region public API
 
-    #endregion public API
+        public abstract void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler);
 
-    #region IDisposable
+        #endregion public API
 
-    public abstract void Dispose();
+        #region IDisposable
 
-    #endregion IDisposable
+        public abstract void Dispose();
 
-    #region private
+        #endregion IDisposable
 
-    private static Lazy<DataAbstractAPI> modelInstance = new Lazy<DataAbstractAPI>(() => new DataImplementation());
+        #region private
+
+        private static Lazy<DataAbstractAPI> modelInstance = new Lazy<DataAbstractAPI>(() => new DataImplementation());
 
         #endregion private
-
-        public abstract void AddBall();
-        public abstract void RemoveLastBall();
     }
 
-  public interface IVector
-  {
-    /// <summary>
-    /// The X component of the vector.
-    /// </summary>
-    double x { get; init; }
+    public interface IVector
+    {
+        /// <summary>
+        /// The X component of the vector.
+        /// </summary>
+        double x { get; init; }
 
-    /// <summary>
-    /// The y component of the vector.
-    /// </summary>
-    double y { get; init; }
-  }
+        /// <summary>
+        /// The y component of the vector.
+        /// </summary>
+        double y { get; init; }
+    }
 
-  public interface IBall
-  {
-    event EventHandler<IVector> NewPositionNotification;
+    public interface IBall
+    {
+        event EventHandler<IVector> NewPositionNotification;
 
-    IVector Velocity { get; set; }
-  }
+        IVector Velocity { get; set; }
+        IVector Position { get; }
+    }
 }
