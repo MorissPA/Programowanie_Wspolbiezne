@@ -49,6 +49,16 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       layerBellow.Start(numberOfBalls, StartHandler);
     }
 
+    public override void AddBall()
+    {
+        layerBellow.AddBall();
+    }
+
+    public override void RemoveLastBall()
+    {
+        layerBellow.RemoveLastBall();
+    }
+
     #endregion ModelAbstractApi
 
     #region API

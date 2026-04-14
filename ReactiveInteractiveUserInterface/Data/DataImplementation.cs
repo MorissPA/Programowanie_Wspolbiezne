@@ -22,31 +22,54 @@ namespace TP.ConcurrentProgramming.Data
       MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
     }
 
-    #endregion ctor
+        #endregion ctor
 
-    #region DataAbstractAPI
+        #region DataAbstractAPI
 
-    public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler)
-    {
-      if (Disposed)
-        throw new ObjectDisposedException(nameof(DataImplementation));
-      if (upperLayerHandler == null)
-        throw new ArgumentNullException(nameof(upperLayerHandler));
-      Random random = new Random();
-      for (int i = 0; i < numberOfBalls; i++)
-      {
-        Vector startingPosition = new(random.Next(100, 400 - 100), random.Next(100, 400 - 100));
-        Ball newBall = new(startingPosition, startingPosition);
-        upperLayerHandler(startingPosition, newBall);
-        BallsList.Add(newBall);
-      }
-    }
+        private Action<IVector, IBall>? _upperLayerHandler;
 
-    #endregion DataAbstractAPI
+        public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler)
+        {
+            if (Disposed)
+                throw new ObjectDisposedException(nameof(DataImplementation));
+            if (upperLayerHandler == null)
+                throw new ArgumentNullException(nameof(upperLayerHandler));
 
-    #region IDisposable
+            _upperLayerHandler = upperLayerHandler;
 
-    protected virtual void Dispose(bool disposing)
+            for (int i = 0; i < numberOfBalls; i++)
+            {
+                AddBall();
+            }
+        }
+
+        public override void AddBall()
+        {
+            if (Disposed) return;
+            if (_upperLayerHandler == null) return;
+
+            Vector startingPosition = new(RandomGenerator.Next(100, 400 - 100), RandomGenerator.Next(100, 400 - 100));
+            Ball newBall = new(startingPosition, startingPosition);
+
+            _upperLayerHandler(startingPosition, newBall);
+            BallsList.Add(newBall);
+        }
+
+        public override void RemoveLastBall()
+        {
+            if (Disposed) return;
+            if (BallsList.Count > 0)
+            {
+                BallsList.RemoveAt(BallsList.Count - 1);
+            }
+        }
+
+        #endregion DataAbstractAPI
+
+
+        #region IDisposable
+
+        protected virtual void Dispose(bool disposing)
     {
       if (!Disposed)
       {

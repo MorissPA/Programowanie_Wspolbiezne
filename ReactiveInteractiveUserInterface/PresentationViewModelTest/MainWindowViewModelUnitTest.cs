@@ -85,12 +85,14 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
         Subscribed++;
         return new NullDisposable();
       }
+            public override void AddBall() { }
+            public override void RemoveLastBall() { }
 
-      #endregion ModelAbstractApi
+            #endregion ModelAbstractApi
 
-      #region private
+            #region private
 
-      private class NullDisposable : IDisposable
+            private class NullDisposable : IDisposable
       {
         public void Dispose()
         { }
@@ -136,12 +138,14 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
       {
         Disposed = true;
       }
+            public override void AddBall() { }
+            public override void RemoveLastBall() { }
 
-      #endregion ModelAbstractApi
+            #endregion ModelAbstractApi
 
-      #region API
+            #region API
 
-      public event EventHandler<BallChaneEventArgs> BallChanged;
+            public event EventHandler<BallChaneEventArgs> BallChanged;
 
       #endregion API
 

@@ -39,8 +39,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private static Lazy<BusinessLogicAbstractAPI> modelInstance = new Lazy<BusinessLogicAbstractAPI>(() => new BusinessLogicImplementation());
 
-    #endregion private
-  }
+        #endregion private
+
+        public abstract void AddBall();
+        public abstract void RemoveLastBall();
+    }
   /// <summary>
   /// Immutable type representing table dimensions
   /// </summary>

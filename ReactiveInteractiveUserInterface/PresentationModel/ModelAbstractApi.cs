@@ -45,5 +45,12 @@ namespace TP.ConcurrentProgramming.Presentation.Model
     private static Lazy<ModelAbstractApi> modelInstance = new Lazy<ModelAbstractApi>(() => new ModelImplementation());
 
     #endregion private
-  }
+ 
+    #region public
+
+    public abstract void AddBall();
+    public abstract void RemoveLastBall();
+
+    #endregion
+    }
 }

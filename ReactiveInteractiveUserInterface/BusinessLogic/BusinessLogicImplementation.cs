@@ -46,6 +46,16 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       layerBellow.Start(numberOfBalls, (startingPosition, databall) => upperLayerHandler(new Position(startingPosition.x, startingPosition.x), new Ball(databall)));
     }
 
+    public override void AddBall()
+    {
+        layerBellow.AddBall();
+    }
+
+    public override void RemoveLastBall()
+    {
+        layerBellow.RemoveLastBall();
+    }
+
     #endregion BusinessLogicAbstractAPI
 
     #region private
