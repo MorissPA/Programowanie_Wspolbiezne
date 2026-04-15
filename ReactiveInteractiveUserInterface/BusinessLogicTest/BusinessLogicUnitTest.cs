@@ -71,8 +71,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       {
         throw new NotImplementedException();
       }
-            public override void AddBall() { }
-            public override void RemoveLastBall() { }
+
         }
 
     private class DataLayerDisposeFixcure : Data.DataAbstractAPI
@@ -88,8 +87,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       {
         throw new NotImplementedException();
       }
-            public override void AddBall() { }
-            public override void RemoveLastBall() { }
+
         }
 
     private class DataLayerStartFixcure : Data.DataAbstractAPI
@@ -116,11 +114,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       private class DataBallFixture : Data.IBall
       {
         public IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public event EventHandler<IVector>? NewPositionNotification = null;
+        public IVector Position { get; set; } = new DataVectorFixture();
+        public event EventHandler<IVector>? NewPositionNotification
+        {
+          add { }
+          remove { }
+        }
       }
-            public override void AddBall() { }
-            public override void RemoveLastBall() { }
+
         }
 
     #endregion testing instrumentation

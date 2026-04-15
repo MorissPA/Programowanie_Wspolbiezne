@@ -10,16 +10,12 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
 
-    <!-- Zmieniono StackPanel na Grid, aby interfejs wypełniał okno -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Miejsce na panel sterowania -->
             <RowDefinition Height="*"/>
-            <!-- Miejsce na stół - zajmuje całą resztę okna -->
         </Grid.RowDefinitions>
 
-        <!-- Panel sterowania (pozostaje z niezmienionym rozmiarem na górze) -->
         <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,15,0,20" VerticalAlignment="Center">
             <TextBlock Text="Liczba kul: " HorizontalAlignment="Center" Margin="0,0,5,0" FontSize="20"/>
             <TextBlock Text="{Binding BallCount}" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="20"/>
@@ -29,8 +25,7 @@
                     IsEnabled="{Binding CanStart}"
                     Width="100" HorizontalAlignment="Center" />
         </StackPanel>
-
-        <!-- Viewbox zapewnia pełne, proporcjonalne skalowanie stołu i kulek wraz ze zmianą rozmiaru okna -->
+        
         <Viewbox Grid.Row="1" Stretch="Uniform" Margin="10">
             <Border BorderThickness="4" BorderBrush="Green" Height="{Binding TableHeight}" Width="{Binding TableWidth}">
                 <ItemsControl ItemsSource="{Binding Balls}">

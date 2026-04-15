@@ -72,8 +72,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model.Test
         NumberOfBalls = numberOfBalls;
         Assert.IsNotNull(upperLayerHandler);
       }
-            public override void AddBall() { }
-            public override void RemoveLastBall() { }
+
 
 
             #endregion BusinessLogicAbstractAPI
