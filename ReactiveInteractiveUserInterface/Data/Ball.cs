@@ -133,5 +133,12 @@ namespace TP.ConcurrentProgramming.Data
         }
 
         #endregion private
+
+        #region TestingInfrastructure
+
+        [Conditional("DEBUG")]
+        internal void MoveForTest(Vector delta) { Move(delta); }
+
+        #endregion TestingInfrastructure
     }
 }
