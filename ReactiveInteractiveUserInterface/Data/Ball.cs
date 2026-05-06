@@ -67,7 +67,7 @@ namespace TP.ConcurrentProgramming.Data
             double velocityMagnitude = Math.Sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
 
             const int minIntervalMs = 8;
-            const int maxIntervalMs = 16;
+            const int maxIntervalMs = 24;
             const double velocityThreshold = 200.0;
 
             if (velocityMagnitude <= 0)
