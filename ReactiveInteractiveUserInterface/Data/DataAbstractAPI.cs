@@ -8,8 +8,29 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+using System;
+
 namespace TP.ConcurrentProgramming.Data
 {
+    public enum DiagnosticEventType
+    {
+        PositionUpdate,
+        WallBounce,
+        CollisionDetected
+    }
+
+    public class DiagnosticData
+    {
+        public DateTime Timestamp { get; set; }
+        public int BallId { get; set; }
+        public double PositionX { get; set; }
+        public double PositionY { get; set; }
+        public double VelocityX { get; set; }
+        public double VelocityY { get; set; }
+        public DiagnosticEventType EventType { get; set; }
+        public string Message { get; set; } = string.Empty;
+    }
+
     public abstract class DataAbstractAPI : IDisposable
     {
         #region Layer Factory
@@ -26,6 +47,8 @@ namespace TP.ConcurrentProgramming.Data
         public abstract void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler);
 
         public abstract IVector CreateVector(double x, double y);
+
+        public abstract void LogDiagnosticData(DiagnosticData data);
 
         #endregion public API
 
@@ -58,6 +81,7 @@ namespace TP.ConcurrentProgramming.Data
     public interface IBall
     {
         event EventHandler<IVector> NewPositionNotification;
+        int Id { get; }
         double Weight { get; }
         double BallRadius { get; }
         IVector Velocity { get; set; }
